@@ -51,4 +51,4 @@ alter table users add column birthday datetime;
 update users
 set birthday=DATE_ADD(now(), INTERVAL -FLOOR(RAND()*(300)) MONTH);
 
-select AVG(year(now())-year(birthday)) from users;
+select dayofweek(DATE_FORMAT(birthday, concat(year(now()), '-%m-%d'))) as dayofweek, count(*) as count from users group by dayofweek order by dayofweek;
