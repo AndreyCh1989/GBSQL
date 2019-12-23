@@ -1,0 +1,18 @@
+select
+	c.name,
+    max(p.birthday) over w as 'yang_user',
+    min(p.birthday) over w as 'old_user',
+    count(c_u.user_id) over w as 'users_group_count',
+    count(c_u.user_id) over() as 'users_count',
+    count(c_u.user_id) over w / count(c_u.user_id) over() * 100 as 'persent'
+from (communities_users c_u
+	join communities c on c.id = c_u.community_id
+    join profiles p on c_u.user_id = p.user_id)
+    window w as (PARTITION BY c_u.community_id);
+	
+	
+	
+Проковырял с этис скриптом кучу времени, не понимаю как ту правильно вытащить:
+1. среднее количество пользователей в группах - я вытащил с помощью count количество по группам, по как теперь это все испольщовать в avg не пойму
+2. самый молодой пользователь в группе - аналогично ту и в следующем, я нашел с помощью max самый молодой день рождения и вывел его, но как вывести вместо дня рождения айди юзера - не пойму
+3. самый пожилой пользователь в группе
