@@ -1,0 +1,11 @@
+select
+	c.name,
+    max(p.birthday) over w as 'yang_user',
+    min(p.birthday) over w as 'old_user',
+    count(c_u.user_id) over w as 'users_group_count',
+    count(c_u.user_id) over() as 'users_count',
+    count(c_u.user_id) over w / count(c_u.user_id) over() * 100 as 'persent'
+from (communities_users c_u
+	join communities c on c.id = c_u.community_id
+    join profiles p on c_u.user_id = p.user_id)
+    window w as (PARTITION BY c_u.community_id);
