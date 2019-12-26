@@ -11,3 +11,7 @@ HSET 'andrey@mail.ru' 'Andrey' - добавляем запись
 HGET 'andrey@mail.ru' - получаем имя
 
 3.
+use hw11
+
+db.catalogs.insertMany( [{name: 'books'}, {name: 'audio'}, {name: 'video'}] )
+db.products.insertMany( [{name: 'book1', catalog: "books"}, {name: 'book2', catalog: "books"}, {name: 'video1', catalog: "video"}] )
