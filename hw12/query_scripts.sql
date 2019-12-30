@@ -25,3 +25,16 @@ from users_information ui
 group by city
 order by count desc
 limit 1;
+
+
+# определить где больше долгов, в штрафах или налогах
+select 
+	ot.name,
+	case
+		when ot.id = 2 then (select sum(amount) from fines f where NOT EXISTS(select id from payments where payed_object_type_id = 3 and object_id = f.id))
+        when ot.id = 3 then (select sum(amount) from taxes t where NOT EXISTS(select id from payments where payed_object_type_id = 2 and object_id = t.id))
+        else 0
+	end as unpaid
+from payed_object_types ot
+order by unpaid desc
+limit 1;
